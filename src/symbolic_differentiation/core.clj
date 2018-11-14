@@ -8,12 +8,15 @@
   [expression variable]
   (cond 
     (number? expression) 0 ; d/dx const = 0
+    (symbol? expression) (if (= expression variable) 1 0) ; d/dx x = 1, d/dx y = 0
+    ;funkcje trygonometryczne, logarytmiczne, itp.
+    ;dalej rekurencja dla dodawania i mnożenia wyrażeń
   )
 )
 
 (defn -main
   [& args]
-  (println (differentiation 4 'x'))
+  (println (differentiation 4 "x"))
   (def x 3)
   (println (+ 2 3))
   (println "Hello, World!")

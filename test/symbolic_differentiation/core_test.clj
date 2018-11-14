@@ -4,10 +4,16 @@
 
 (deftest constant-diff-test
   (testing "FIXME, I fail."
-    (is (= 0 (differentiation 1 "x")))
-    (is (= 0 (differentiation -1000 "x")))
-    (is (= 0 (differentiation (* 3 -3) "y")))
+    (is (= 0 (differentiation 1 'x')))
+    (is (= 0 (differentiation -1000 'x')))
+    (is (= 0 (differentiation (* 3 -3) 'y')))
     (is (= 0 (differentiation 0 "abc")))    
   )
 )
 
+(deftest variable-diff-test
+  (testing "FIXME, I fail."
+    (is (= 1 (differentiation 'x' 'x')))
+    (is (= 0 (differentiation 'y' 'x')))    
+  )
+)
