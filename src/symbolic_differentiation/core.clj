@@ -10,16 +10,18 @@
 (defn ctg? [x] (and (= (count x) 2) (= (first x) 'ctg)))
 (defn sec? [x] (and (= (count x) 2) (= (first x) 'sec)))
 (defn csc? [x] (and (= (count x) 2) (= (first x) 'csc)))
-(defn exp? [x] (and (= (count x) 2) (= (first x) 'cos)))
-(defn ln? [x] (and (= (count x) 2) (= (first x) 'cos)))
-(defn log? [x] (and (= (count x) 2) (= (first x) 'cos)))
+(defn exp? [x] (and (= (count x) 2) (= (first x) 'exp)))
+(defn ln? [x] (and (= (count x) 2) (= (first x) 'ln)))
+(defn log? [x] (and (= (count x) 3) (= (first x) 'log)))
+
+;do zrobienia
+(defn sqrt? [x] (and (= (count x) 3) (= (first x) 'sqrt)))
 (defn arcsin? [x] (and (= (count x) 2) (= (first x) 'cos)))
 (defn arccos? [x] (and (= (count x) 2) (= (first x) 'cos)))
 (defn arctg? [x] (and (= (count x) 2) (= (first x) 'cos)))
 (defn arcctg? [x] (and (= (count x) 2) (= (first x) 'cos)))
 (defn arcsec? [x] (and (= (count x) 2) (= (first x) 'cos)))
 (defn arccsc? [x] (and (= (count x) 2) (= (first x) 'cos)))
-(defn sqrt? [x] (and (= (count x) 2) (= (first x) 'cos)))
 (defn sinh? [x] (and (= (count x) 2) (= (first x) 'cos)))
 (defn cosh? [x] (and (= (count x) 2) (= (first x) 'cos)))
 (defn tgh? [x] (and (= (count x) 2) (= (first x) 'cos)))
@@ -39,6 +41,9 @@
     (ctg? expression) (cond (= (second expression) variable)(list '/ 1 (list '\^ (list '-sin variable) 2)) :else 0)
     (sec? expression) (cond (= (second expression) variable)(list '* (list 'tg variable) (list 'sec variable)) :else 0)
     (csc? expression) (cond (= (second expression) variable)(list '* (list '-ctg variable) (list 'csc variable)) :else 0)
+    (exp? expression) (cond (= (second expression) variable)(list 'exp variable) :else 0)
+    (ln? expression) (cond (= (second expression) variable)(list '/ 1 variable) :else 0)
+    (log? expression) (cond (= (second (next expression)) variable)(list '/ 1 (list '* variable (list 'ln (second expression)))) :else 0)
     
     ;funkcje trygonometryczne, logarytmiczne, itp.
     ;dalej rekurencja dla dodawania i mnożenia wyrażeń
@@ -48,7 +53,7 @@
 (defn -main
   [& args]
   
-  (println (differentiation '(ctg x) 'x))
+  (println (differentiation '(log 123 x) 'x))
   ; (println (nth 0 '(sin x)))
   ; (def x 3)
   ; (println (+ 2 3))

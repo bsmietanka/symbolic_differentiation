@@ -2,7 +2,7 @@
   (:require [clojure.test :refer :all]
             [symbolic-differentiation.core :refer :all]))
 
-(deftest constant-diff-test
+(deftest constant-diff-tests
   (testing "FIXME, I fail."
     (is (= 0 (differentiation 1 'x')))
     (is (= 0 (differentiation -1000 'x')))
@@ -11,14 +11,14 @@
   )
 )
 
-(deftest variable-diff-test
+(deftest variable-diff-tests
   (testing "FIXME, I fail."
     (is (= 1 (differentiation 'x' 'x')))
     (is (= 0 (differentiation 'y' 'x')))    
   )
 )
 
-(deftest trigonometrix-diff-test
+(deftest trigonometrics-diff-tests
   (testing "FIXME, I fail."
     (is (= '(cos x) (differentiation '(sin x) 'x)))
     (is (= '(cos y) (differentiation '(sin y) 'y)))
@@ -39,4 +39,25 @@
     (is (= '(* (-ctg y) (csc y)) (differentiation '(csc y) 'y)))
     (is (= 0 (differentiation '(csc x) 'y)))
     )
+)
+
+(deftest exponential-diff-tests
+  (testing "FIXME, I fail."
+    (is (= '(exp x) (differentiation '(exp x) 'x)))
+    (is (= '(exp y) (differentiation '(exp y) 'y)))
+    (is (= 0 (differentiation '(exp 123) 'x)))    
+  )
+)
+
+(deftest logarithm-diff-tests
+  (testing "FIXME, I fail."
+    (is (= '(/ 1 x) (differentiation '(ln x) 'x)))
+    (is (= '(/ 1 y) (differentiation '(ln y) 'y)))
+    (is (= 0 (differentiation '(ln 123) 'x)))
+    (is (= '(/ 1 (* x (ln 123))) (differentiation '(log 123 x) 'x)))
+    (is (= '(/ 1 (* y (ln x))) (differentiation '(log x y) 'y)))
+    (is (= 0 (differentiation '(log 123 x) 'y)))
+    (is (= 0 (differentiation '(log 123 1234) 'y)))
+    (is (= 0 (differentiation '(log x y) 'x)))  
+  )
 )
