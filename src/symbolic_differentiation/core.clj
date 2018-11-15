@@ -76,18 +76,18 @@
     (ctg? expression) 
       (if (= (second expression) variable) 
         (list '/ 
-          1
+          -1
           (list '\^ 
-            (list '-sin variable)
+            (list 'sin variable)
             2)) 
         (if (or (number? (second expression)) (or (symbol? (second expression)) (= (count (second expression)) 1)))
           0
           (list '*
             (differentiation (second expression) variable)
             (list '/
-              1
+              -1
               (list '\^ 
-                (list '-sin (second expression)) 
+                (list 'sin (second expression)) 
                 2)))))
     (sec? expression) 
       (if (= (second expression) variable) 
@@ -137,7 +137,7 @@
 (defn -main
   [& args]
   
-  (println (differentiation '(cos (sin (sin (cos x)))) 'x))
+  (println (differentiation '(tg (ctg x)) 'x))
   ; (println (nth 0 '(sin x)))
   ; (def x 3)
   ; (println (+ 2 3))
