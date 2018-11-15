@@ -29,31 +29,91 @@
 (defn sech? [x] (and (= (count x) 2) (= (first x) 'cos)))
 (defn ctgh? [x] (and (= (count x) 2) (= (first x) 'cos)))
 
+(defn addition? [x] (and (=(count x) 3) (= (first x) '+)))
+(defn multiplication? [x] (and (=(count x) 3) (= (first x) '*)))
 
 (defn differentiation 
   [expression variable]
   (cond
-    (number? expression) 0 ; d/dx const = 0
-    (symbol? expression) (if (= expression variable) 1 0) ; d/dx x = 1, d/dx y = 0
-    (sin? expression) (cond (= (second expression) variable)(list 'cos variable) :else 0)
-    (cos? expression) (cond (= (second expression) variable)(list '-sin variable) :else 0)
-    (tg? expression) (cond (= (second expression) variable)(list '/ 1 (list '\^ (list 'cos variable) 2)) :else 0)
-    (ctg? expression) (cond (= (second expression) variable)(list '/ 1 (list '\^ (list '-sin variable) 2)) :else 0)
-    (sec? expression) (cond (= (second expression) variable)(list '* (list 'tg variable) (list 'sec variable)) :else 0)
-    (csc? expression) (cond (= (second expression) variable)(list '* (list '-ctg variable) (list 'csc variable)) :else 0)
-    (exp? expression) (cond (= (second expression) variable)(list 'exp variable) :else 0)
-    (ln? expression) (cond (= (second expression) variable)(list '/ 1 variable) :else 0)
-    (log? expression) (cond (= (second (next expression)) variable)(list '/ 1 (list '* variable (list 'ln (second expression)))) :else 0)
-    
-    ;funkcje trygonometryczne, logarytmiczne, itp.
-    ;dalej rekurencja dla dodawania i mnożenia wyrażeń
+    (number? expression) 
+      0
+    (symbol? expression) 
+      (if (= expression variable) 
+        1 
+        0)
+    (sin? expression) 
+      (if (= (second expression) variable) 
+        (list 'cos variable)
+        0)
+    (cos? expression) 
+      (if (= (second expression) variable) 
+        (list '-sin variable)
+        0)
+    (tg? expression) 
+      (if (= (second expression) variable) 
+        (list '/ 
+          1 
+          (list '\^ 
+            (list 'cos variable) 
+            2)) 
+        0)
+    (ctg? expression) 
+      (if (= (second expression) variable) 
+        (list '/ 
+          1
+          (list '\^ 
+            (list '-sin variable)
+            2)) 
+        0)
+    (sec? expression) 
+      (if (= (second expression) variable) 
+        (list '* 
+          (list 'tg variable) 
+          (list 'sec variable)) 
+        0)
+    (csc? expression) 
+      (if (= (second expression) variable) 
+        (list '* 
+          (list '-ctg variable)
+          (list 'csc variable)) 
+        0)
+    (exp? expression) 
+      (if (= (second expression) variable) 
+        (list 'exp variable)
+        0)
+    (ln? expression) 
+      (if (= (second expression) variable) 
+        (list '/ 
+          1
+          variable)
+        0)
+    (log? expression) 
+      (if (= (second (next expression)) variable) 
+        (list '/ 
+          1
+          (list '* 
+            variable
+            (list 'ln (second expression))))
+        0)
+    (addition? expression) 
+      (list '+ 
+        (differentiation (second expression) variable)
+        (differentiation (second (rest expression)) variable))
+    (multiplication? expression) 
+      (list '+ 
+        (list '* 
+          (differentiation (second expression) variable)
+          (second (rest expression))) 
+        (list '* 
+          (second expression) 
+          (differentiation (second (rest expression)) variable)))
   )
 )
 
 (defn -main
   [& args]
   
-  (println (differentiation '(log 123 x) 'x))
+  (println (differentiation '(* 2 x) 'x))
   ; (println (nth 0 '(sin x)))
   ; (def x 3)
   ; (println (+ 2 3))
