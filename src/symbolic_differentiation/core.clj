@@ -44,11 +44,19 @@
     (sin? expression) 
       (if (= (second expression) variable) 
         (list 'cos variable)
-        0)
+        (if (or (number? (second expression)) (or (symbol? (second expression)) (= (count (second expression)) 1)))
+          0
+          (list '*
+            (differentiation (second expression) variable)
+            (list 'cos (second expression)))))
     (cos? expression) 
       (if (= (second expression) variable) 
         (list '-sin variable)
-        0)
+        (if (or (number? (second expression)) (or (symbol? (second expression)) (= (count (second expression)) 1)))
+          0
+          (list '*
+            (differentiation (second expression) variable)
+            (list 'sin (second expression)))))
     (tg? expression) 
       (if (= (second expression) variable) 
         (list '/ 
@@ -56,7 +64,13 @@
           (list '\^ 
             (list 'cos variable) 
             2)) 
-        0)
+        (if (or (number? (second expression)) (or (symbol? (second expression)) (= (count (second expression)) 1)))
+          0
+          (list '*
+            (differentiation (second expression) variable)
+            (list '\^ 
+              (list 'cos (second expression)) 
+              2))))
     (ctg? expression) 
       (if (= (second expression) variable) 
         (list '/ 
@@ -64,7 +78,13 @@
           (list '\^ 
             (list '-sin variable)
             2)) 
-        0)
+        (if (or (number? (second expression)) (or (symbol? (second expression)) (= (count (second expression)) 1)))
+          0
+          (list '*
+            (differentiation (second expression) variable)
+            (list '\^ 
+              (list '-sin (second expression)) 
+              2))))
     (sec? expression) 
       (if (= (second expression) variable) 
         (list '* 
@@ -113,7 +133,7 @@
 (defn -main
   [& args]
   
-  (println (differentiation '(* 2 x) 'x))
+  (println (differentiation '(ctg (sin (tg (cos x)))) 'x))
   ; (println (nth 0 '(sin x)))
   ; (def x 3)
   ; (println (+ 2 3))
