@@ -56,7 +56,7 @@
           0
           (list '*
             (differentiation (second expression) variable)
-            (list 'sin (second expression)))))
+            (list '-sin (second expression)))))
     (tg? expression) 
       (if (= (second expression) variable) 
         (list '/ 
