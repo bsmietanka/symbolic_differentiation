@@ -2,7 +2,40 @@
   (:gen-class)
   (:require [functions.polynomial :as poly])
   (:require [utils.math :as cm]) ; cm as Custom Math
-) 
+)
+
+(def expressions (hash-map 'sin 2 'cos 2 'log 3 'ln 2 'exp 2 'tg 2 'ctg 2 'sec 2 'csc 2 '+ 3 '* 3
+                       ;'arcsin 'arccos 'arctg 'arcctg 'arcsec 'arccsc 'sinh 'cosh 'tgh 'ctgh 'sech
+                       ))
+
+(defmacro nested-macro [x]
+  (if (= (count x) 0)
+    ()
+    (let [first-x (first x)]
+      (if (= (count x) 1)
+        `(defn ~(symbol (str first-x "?")) [arg#] (and (= (count arg#) 1) (= (first arg#) '~first-x)))
+        (let [rest-x (rest x)]
+          `(defn ~(symbol (str first-x "?")) [arg#] (and (= (count arg#) 1) (= (first arg#) '~first-x)))
+          `(nested-macro ~rest-x)
+        )
+      )
+    )
+  )
+)
+
+(use 'clojure.walk)
+(println (macroexpand-all `(nested-macro (my func)))) ; only last function is defined
+(nested-macro (my func))
+(println (func? '(func))) ; working
+; (println (my? '(my))) ; not working
+
+(defmacro my-macro [name num]
+  `(defn ~(symbol (str name "?")) [x#] (and (= (count x#) ~num) (= (first x#) '~name)))
+)
+
+(my-macro my-func 2)
+(println (my-func? '(my-func 1)))
+(println my-func?)
 
 (defn sin [x] (Math/sin x))
 (defn cos [x] (Math/cos x))
@@ -51,7 +84,6 @@
 (defn sech? [x] (and (= (count x) 2) (= (first x) 'sech)))
 (defn csch? [x] (and (= (count x) 2) (= (first x) 'csch)))
 (defn pow? [x] (and (= (count x) 3) (= (first x) 'pow)))
-
 (defn addition? [x] (and (=(count x) 3) (= (first x) '+)))
 (defn subtraction? [x] (and (=(count x) 3) (= (first x) '-)))
 (defn multiplication? [x] (and (=(count x) 3) (= (first x) '*)))
@@ -252,13 +284,6 @@
             (second (rest expression))
             2))
   )
-)
-
-(defn differentiation-value
-  [expression variable argument-value]
-  (def diff-string (differentiation expression variable))
-  (eval(read-string (clojure.string/join " " ["(" "def" variable argument-value ")"])))
-  (eval(read-string (pr-str diff-string)))
 )
 
 (defn -main
