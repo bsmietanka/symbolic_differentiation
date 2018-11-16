@@ -13,21 +13,28 @@
 (defn exp? [x] (and (= (count x) 2) (= (first x) 'exp)))
 (defn ln? [x] (and (= (count x) 2) (= (first x) 'ln)))
 (defn log? [x] (and (= (count x) 3) (= (first x) 'log)))
-
-;do zrobienia
 (defn sqrt? [x] (and (= (count x) 3) (= (first x) 'sqrt)))
-(defn arcsin? [x] (and (= (count x) 2) (= (first x) 'cos)))
-(defn arccos? [x] (and (= (count x) 2) (= (first x) 'cos)))
-(defn arctg? [x] (and (= (count x) 2) (= (first x) 'cos)))
-(defn arcctg? [x] (and (= (count x) 2) (= (first x) 'cos)))
-(defn arcsec? [x] (and (= (count x) 2) (= (first x) 'cos)))
-(defn arccsc? [x] (and (= (count x) 2) (= (first x) 'cos)))
-(defn sinh? [x] (and (= (count x) 2) (= (first x) 'cos)))
-(defn cosh? [x] (and (= (count x) 2) (= (first x) 'cos)))
-(defn tgh? [x] (and (= (count x) 2) (= (first x) 'cos)))
-(defn ctgh? [x] (and (= (count x) 2) (= (first x) 'cos)))
-(defn sech? [x] (and (= (count x) 2) (= (first x) 'cos)))
-(defn ctgh? [x] (and (= (count x) 2) (= (first x) 'cos)))
+(defn arcsin? [x] (and (= (count x) 2) (= (first x) 'arcsin)))
+(defn arccos? [x] (and (= (count x) 2) (= (first x) 'arccos)))
+(defn arctg? [x] (and (= (count x) 2) (= (first x) 'arctg)))
+(defn arcctg? [x] (and (= (count x) 2) (= (first x) 'arcctg)))
+(defn arcsec? [x] (and (= (count x) 2) (= (first x) 'arcsec)))
+(defn arccsc? [x] (and (= (count x) 2) (= (first x) 'arccsc)))
+(defn sinh? [x] (and (= (count x) 2) (= (first x) 'sinh)))
+(defn cosh? [x] (and (= (count x) 2) (= (first x) 'cosh)))
+(defn tgh? [x] (and (= (count x) 2) (= (first x) 'tgh)))
+(defn ctgh? [x] (and (= (count x) 2) (= (first x) 'ctgh)))
+(defn sech? [x] (and (= (count x) 2) (= (first x) 'sech)))
+(defn csch? [x] (and (= (count x) 2) (= (first x) 'csch)))
+;do zrobienia
+
+
+
+
+
+
+
+
 
 (defn addition? [x] (and (=(count x) 3) (= (first x) '+)))
 (defn multiplication? [x] (and (=(count x) 3) (= (first x) '*)))
@@ -119,6 +126,102 @@
             variable
             (list 'ln (second expression))))
         0)
+    (sqrt? expression)
+      (if (= (second (next expression)) variable) 
+        (list '*  
+          (list '/ 1 (second expression))
+          (list '\^ variable
+            (list '- 
+              (list '/ 1 (second expression)) 
+              1)))
+        0)
+    (arcsin? expression) 
+      (if (= (second expression) variable) 
+        (list '/ 
+          1
+          (list '\^ 
+            (list '- 1 (list '\^ variable 2))
+            (list '/ 1 2)
+          ))
+        0)
+    (arccos? expression) 
+      (if (= (second expression) variable) 
+        (list '/ 
+          -1
+          (list '\^ 
+            (list '- 1 (list '\^ variable 2))
+            (list '/ 1 2)
+          ))
+        0)  
+    (arctg? expression) 
+      (if (= (second expression) variable) 
+        (list '/ 
+          1
+          (list '+ (list '\^ variable 2) 1)
+        )
+        0)
+    (arcctg? expression) 
+      (if (= (second expression) variable) 
+        (list '/ 
+          -1
+          (list '+ (list '\^ variable 2) 1)
+        )
+        0)
+    (arcsec? expression) 
+      (if (= (second expression) variable) 
+        (list '/ 
+          1
+          (list '* 
+            (list '\^ 
+              (list '- 
+                1 
+                (list '/ 
+                  1 
+                  (list '\^ variable 2)))
+              (list '/ 1 2))  
+            (list '\^ variable 2))
+        )
+        0)
+    (arccsc? expression) 
+      (if (= (second expression) variable) 
+        (list '/ 
+          -1
+          (list '* 
+            (list '\^ 
+              (list '- 
+                1 
+                (list '/ 
+                  1 
+                  (list '\^ variable 2)))
+              (list '/ 1 2))  
+            (list '\^ variable 2))
+        )
+        0)
+    (sinh? expression) 
+      (if (= (second expression) variable) 
+        (list 'cosh variable)
+        0)
+    (cosh? expression) 
+      (if (= (second expression) variable) 
+        (list 'sinh variable)
+        0)
+    (tgh? expression) 
+      (if (= (second expression) variable) 
+        (list '\^ (list 'sech variable) 2)
+        0)
+    (ctgh? expression) 
+      (if (= (second expression) variable) 
+        (list '- 0 (list '\^ (list 'csch variable) 2))
+        0)
+    (sech? expression) 
+      (if (= (second expression) variable) 
+        (list '* (list 'tgh variable) (list '- 0 (list 'sech variable)))
+        0)
+    (csch? expression) 
+      (if (= (second expression) variable) 
+        (list '- 0 (list '* (list 'ctgh variable) (list 'csch variable)))
+        0)
+      
     (addition? expression) 
       (list '+ 
         (differentiation (second expression) variable)
@@ -137,7 +240,8 @@
 (defn -main
   [& args]
   
-  (println (differentiation '(tg (ctg x)) 'x))
+  ;(println (differentiation '(tg (ctg x)) 'x))
+  (println (differentiation '(sqrt 3 x) 'x))
   ; (println (nth 0 '(sin x)))
   ; (def x 3)
   ; (println (+ 2 3))

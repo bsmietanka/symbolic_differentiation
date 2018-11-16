@@ -61,3 +61,83 @@
     (is (= 0 (differentiation '(log x y) 'x)))  
   )
 )
+
+(deftest natural-root-diff-tests
+  (testing "FIXME, I fail."
+    (is (= '(* (/ 1 2) (\^ x (- (/ 1 2) 1))) (differentiation '(sqrt 2 x) 'x)))
+    (is (= '(* (/ 1 3) (\^ x (- (/ 1 3) 1))) (differentiation '(sqrt 3 x) 'x)))
+    (is (= '(* (/ 1 4) (\^ x (- (/ 1 4) 1))) (differentiation '(sqrt 4 x) 'x)))
+  )
+)
+
+(deftest arcsin-diff-tests
+  (testing "FIXME, I fail."
+    (is (= '(/ 1 (\^ (- 1 (\^ x 2)) (/ 1 2))) (differentiation '(arcsin x) 'x)))
+  )
+)
+
+(deftest arccos-diff-tests
+  (testing "FIXME, I fail."
+    (is (= '(/ -1 (\^ (- 1 (\^ x 2)) (/ 1 2))) (differentiation '(arccos x) 'x)))
+  )
+)
+
+(deftest arctg-diff-tests
+  (testing "FIXME, I fail."
+    (is (= '(/ 1 (+ (\^ x 2) 1)) (differentiation '(arctg x) 'x)))
+  )
+)
+
+(deftest arcctg-diff-tests
+  (testing "FIXME, I fail."
+    (is (= '(/ -1 (+ (\^ x 2) 1)) (differentiation '(arcctg x) 'x)))
+  )
+)
+
+(deftest arcsec-diff-tests
+  (testing "FIXME, I fail."
+    (is (= '(/ 1 (* (\^ (- 1 (/ 1 (\^ x 2))) (/ 1 2)) (\^ x 2))) (differentiation '(arcsec x) 'x)))
+  )
+)
+
+(deftest arccsc-diff-tests
+  (testing "FIXME, I fail."
+    (is (= '(/ -1 (* (\^ (- 1 (/ 1 (\^ x 2))) (/ 1 2)) (\^ x 2))) (differentiation '(arccsc x) 'x)))
+  )
+)
+
+(deftest sinh-diff-tests
+  (testing "FIXME, I fail."
+    (is (= '(cosh x) (differentiation '(sinh x) 'x)))
+  )
+)
+
+(deftest cosh-diff-tests
+  (testing "FIXME, I fail."
+    (is (= '(sinh x) (differentiation '(cosh x) 'x)))
+  )
+)
+
+(deftest tgh-diff-tests
+  (testing "FIXME, I fail."
+    (is (= '(\^ (sech x) 2) (differentiation '(tgh x) 'x)))
+  )
+)
+
+(deftest ctgh-diff-tests
+  (testing "FIXME, I fail."
+    (is (= '(- 0 (\^ (csch x) 2)) (differentiation '(ctgh x) 'x)))
+  )
+)
+
+(deftest sech-diff-tests
+  (testing "FIXME, I fail."
+    (is (= '(* (tgh x) (- 0 (sech x))) (differentiation '(sech x) 'x)))
+  )
+)
+
+(deftest csch-diff-tests
+  (testing "FIXME, I fail."
+    (is (= '(- 0 (* (ctgh x) (csch x))) (differentiation '(csch x) 'x)))
+  )
+)
