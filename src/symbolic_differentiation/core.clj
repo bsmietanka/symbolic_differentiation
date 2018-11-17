@@ -113,11 +113,18 @@
         (list 'exp variable)
         0)
     (ln? expression) 
-      (if (= (second expression) variable) 
-        (list '/ 
-          1
-          variable)
-        0)
+      (list '* 
+        (differentiation (second expression) variable)
+        (list '/ 1 (second expression))
+      )
+    ; (ln? expression) 
+    ;   (if (= (second expression) variable) 
+    ;     (list '/ 
+    ;       1
+    ;       variable)
+    ;     (list '* (differentiation (second expression) variable)
+    ;       (list '/ 1 (second expression)))
+    ;   )
     (log? expression) 
       (if (= (second (next expression)) variable) 
         (list '/ 
@@ -241,7 +248,8 @@
   [& args]
   
   ;(println (differentiation '(tg (ctg x)) 'x))
-  (println (differentiation '(sqrt 3 x) 'x))
+  ;(println (differentiation '(sqrt 3 x) 'x))
+  (println (differentiation '(ln (ln x)) 'x))
   ; (println (nth 0 '(sin x)))
   ; (def x 3)
   ; (println (+ 2 3))
