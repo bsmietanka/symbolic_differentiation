@@ -261,8 +261,47 @@
   (eval(read-string (pr-str diff-string)))
 )
 
+(defn diff-eval
+  [diff variable argument-value]
+  (def diff-string diff)
+  (eval(read-string (clojure.string/join " " ["(" "def" variable argument-value ")"])))
+  (eval(read-string (pr-str diff-string)))
+)
+
+(defn function-multiple-differentiation-values
+  [expression variable argument-values]
+    (ns symbolic-differentiation.core)
+    (loop [expression (differentiation expression variable) variable variable argument-values argument-values counted []] 
+      (do
+        (if (= (count argument-values) 0)
+          counted
+          (recur expression variable (next argument-values) (conj counted (diff-eval expression variable (first argument-values))))
+        )
+      )
+    )
+)
+
+(defn function-multiple-values
+  [expression variable argument-values]
+    (ns symbolic-differentiation.core)
+    (loop [expression expression variable variable argument-values argument-values counted []] 
+      (do
+        (if (= (count argument-values) 0)
+          counted
+          (recur expression variable (next argument-values) (conj counted (diff-eval expression variable (first argument-values))))
+        )
+      )
+    )
+)
+
+
 (defn -main
   [& args]
-  
+  (ns symbolic-differentiation.core)
+  (def y 3)
+  (def x 5)
   (println (differentiation '(ln (tg x)) 'x))
+  (println (function-multiple-differentiation-values '(ln (tg x)) 'x '(1 2 3 4)))
+  (println (function-multiple-values '(* y (ln x)) 'x '(1 2 3 4)))
+  (println (eval (differentiation '(sin (* y (tg x))) 'x)))
 )
