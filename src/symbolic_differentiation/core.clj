@@ -262,12 +262,12 @@
 )
 
 (defn diff-eval
+  "Funkcja liczy wartość danej funkcji w danym punkcie. Oryginalne wartości zmiennych pozostają bez zmian"
   [diff variable argument-value]
   (def diff-string diff)
   (let 
     [pom (resolve variable)] 
     (do
-     
       (if (not= pom nil)
         (let [val (eval variable)] 
           (do
@@ -279,17 +279,17 @@
               )
             )
           ))
-        (do
+        (do ;else
           (eval(read-string (clojure.string/join " " ["(" "def" variable argument-value ")"])))
           (eval(read-string (pr-str diff-string)))
         )
       )
-    
     ) 
   )
 )
 
 (defn function-multiple-differentiation-values
+  "Funkcja liczy pochodną podanej w parametrze funkcji i oblicza wartości pochodnej w zadanych punktach"
   [expression variable argument-values]
     (loop [expression (differentiation expression variable) variable variable argument-values argument-values counted []] 
       (do
@@ -302,6 +302,7 @@
 )
 
 (defn function-multiple-values
+  "Funkcja oblicza wartości funkcji w zadanych punktach"
   [expression variable argument-values]
     (loop [expression expression variable variable argument-values argument-values counted []] 
       (do
