@@ -73,7 +73,7 @@
     (cos? expression) 
       (list '*
         (differentiation (second expression) variable)
-        (list '-sin (second expression)))
+        (list '- 0 (list 'sin (second expression))))
     (tg? expression) 
       (list '*
         (differentiation (second expression) variable)
@@ -100,7 +100,7 @@
       (list '*
         (differentiation (second expression) variable)
         (list '* 
-          (list '-ctg (second expression))
+          (list '- 0 (list 'ctg (second expression)))
           (list 'csc (second expression))))
     (exp? expression) 
       (list '*
