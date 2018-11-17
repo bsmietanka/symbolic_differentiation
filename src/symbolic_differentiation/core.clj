@@ -264,13 +264,33 @@
 (defn diff-eval
   [diff variable argument-value]
   (def diff-string diff)
-  (eval(read-string (clojure.string/join " " ["(" "def" variable argument-value ")"])))
-  (eval(read-string (pr-str diff-string)))
+  (let 
+    [pom (resolve variable)] 
+    (do
+     
+      (if (not= pom nil)
+        (let [val (eval variable)] 
+          (do
+            (eval(read-string (clojure.string/join " " ["(" "def" variable argument-value ")"])))
+            (let [result (eval(read-string (pr-str diff-string)))] 
+              (do
+                (eval(read-string (clojure.string/join " " ["(" "def" variable val ")"])))
+                result
+              )
+            )
+          ))
+        (do
+          (eval(read-string (clojure.string/join " " ["(" "def" variable argument-value ")"])))
+          (eval(read-string (pr-str diff-string)))
+        )
+      )
+    
+    ) 
+  )
 )
 
 (defn function-multiple-differentiation-values
   [expression variable argument-values]
-    (ns symbolic-differentiation.core)
     (loop [expression (differentiation expression variable) variable variable argument-values argument-values counted []] 
       (do
         (if (= (count argument-values) 0)
@@ -283,7 +303,6 @@
 
 (defn function-multiple-values
   [expression variable argument-values]
-    (ns symbolic-differentiation.core)
     (loop [expression expression variable variable argument-values argument-values counted []] 
       (do
         (if (= (count argument-values) 0)
