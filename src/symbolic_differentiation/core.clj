@@ -230,6 +230,13 @@
   )
 )
 
+(defn differentiation-value
+  [expression variable argument-value]
+  (def diff-string (differentiation expression variable))
+  (eval(read-string (clojure.string/join " " ["(" "def" variable argument-value ")"])))
+  (eval(read-string (pr-str diff-string)))
+)
+
 (defn -main
   [& args]
   
