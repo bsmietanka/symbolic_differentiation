@@ -120,7 +120,7 @@
           1
           (list 'pow 
             (list '- 1 (list 'pow (second expression) 2))
-            (list '/ 1 2)
+            0.5
           )))
     (arccos? expression) 
       (list '*
@@ -129,7 +129,7 @@
           -1
           (list 'pow 
             (list '- 1 (list 'pow (second expression) 2))
-            (list '/ 1 2)
+            0.5
           )))  
     (arctg? expression) 
       (list '*
@@ -157,7 +157,7 @@
                 (list '/ 
                   1 
                   (list 'pow (second expression) 2)))
-              (list '/ 1 2))  
+              0.5)  
             (list 'pow (second expression) 2))
         ))
     (arccsc? expression) 
@@ -172,7 +172,7 @@
                 (list '/ 
                   1 
                   (list 'pow (second expression) 2)))
-              (list '/ 1 2))  
+              0.5)  
             (list 'pow (second expression) 2))
         ))
     (sinh? expression) 

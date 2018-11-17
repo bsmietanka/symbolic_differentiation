@@ -72,13 +72,13 @@
 
 (deftest arcsin-diff-tests
   (testing "FIXME, I fail."
-    (is (= '(* 1 (/ 1 (pow (- 1 (pow x 2)) (/ 1 2)))) (differentiation '(arcsin x) 'x)))
+    (is (= '(* 1 (/ 1 (pow (- 1 (pow x 2)) 0.5))) (differentiation '(arcsin x) 'x)))
   )
 )
 
 (deftest arccos-diff-tests
   (testing "FIXME, I fail."
-    (is (= '(* 1 (/ -1 (pow (- 1 (pow x 2)) (/ 1 2)))) (differentiation '(arccos x) 'x)))
+    (is (= '(* 1 (/ -1 (pow (- 1 (pow x 2)) 0.5))) (differentiation '(arccos x) 'x)))
   )
 )
 
@@ -96,13 +96,13 @@
 
 (deftest arcsec-diff-tests
   (testing "FIXME, I fail."
-    (is (= '(* 1 (/ 1 (* (pow (- 1 (/ 1 (pow x 2))) (/ 1 2)) (pow x 2)))) (differentiation '(arcsec x) 'x)))
+    (is (= '(* 1 (/ 1 (* (pow (- 1 (/ 1 (pow x 2))) 0.5) (pow x 2)))) (differentiation '(arcsec x) 'x)))
   )
 )
 
 (deftest arccsc-diff-tests
   (testing "FIXME, I fail."
-    (is (= '(* 1 (/ -1 (* (pow (- 1 (/ 1 (pow x 2))) (/ 1 2)) (pow x 2)))) (differentiation '(arccsc x) 'x)))
+    (is (= '(* 1 (/ -1 (* (pow (- 1 (/ 1 (pow x 2))) 0.5) (pow x 2)))) (differentiation '(arccsc x) 'x)))
   )
 )
 
