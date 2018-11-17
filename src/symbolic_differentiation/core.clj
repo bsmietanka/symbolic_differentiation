@@ -27,18 +27,11 @@
 (defn sech? [x] (and (= (count x) 2) (= (first x) 'sech)))
 (defn csch? [x] (and (= (count x) 2) (= (first x) 'csch)))
 (defn pow? [x] (and (= (count x) 3) (= (first x) 'pow)))
-;do zrobienia
-
-
-
-
-
-
-
-
 
 (defn addition? [x] (and (=(count x) 3) (= (first x) '+)))
+(defn subtraction? [x] (and (=(count x) 3) (= (first x) '-)))
 (defn multiplication? [x] (and (=(count x) 3) (= (first x) '*)))
+(defn division? [x] (and (=(count x) 3) (= (first x) '/)))
 
 (defn differentiation 
   [expression variable]
@@ -206,9 +199,12 @@
       (list '*
         (differentiation (second expression) variable) 
         (list '- 0 (list '* (list 'ctgh (second expression)) (list 'csch (second expression)))))
-      
     (addition? expression)
       (list '+ 
+        (differentiation (second expression) variable)
+        (differentiation (second (rest expression)) variable))
+    (subtraction? expression)
+      (list '- 
         (differentiation (second expression) variable)
         (differentiation (second (rest expression)) variable))
     (multiplication? expression) 
@@ -219,26 +215,25 @@
         (list '* 
           (second expression) 
           (differentiation (second (rest expression)) variable)))
+    (division? expression)
+      (list '/
+          (list '-
+            (list '* 
+              (differentiation (second expression) variable)
+              (second (rest expression))) 
+            (list '* 
+              (second expression) 
+              (differentiation (second (rest expression)) variable)))
+          (list 'pow
+            (second (rest expression))
+            2))
   )
 )
 
 (defn -main
   [& args]
   
-  ;(println (differentiation '(tg (ctg x)) 'x))
-  ;(println (differentiation '(sqrt 3 x) 'x))
-  (def x 5)
   (println (differentiation '(ln (tg x)) 'x))
   ;(eval (differentiation '(ln x) 'x))
   ;(eval ((let [x 5] (differentiation '(ln (sinh x)) 'x))))
-  ; (println (nth 0 '(sin x)))
-  ; (def x 3)
-  ; (println (+ 2 3))
-  ; (println "Hello, World!")
-  ; (println (* 7 3))
-  ; (println "Test x^3. Is ok?")
-  ; (println (poly/IsFunctionOk "x^3"))
-  ; (println "Test x^3. Derivative is equal to:")
-  ; (println (poly/Diff "x^3"))
-  ;(println (eval (poly/Diff "x^3")))
 )
