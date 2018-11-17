@@ -4,6 +4,30 @@
   (:require [utils.math :as cm]) ; cm as Custom Math
 ) 
 
+(defn sin [x] (Math/sin x))
+(defn cos [x] (Math/cos x))
+(defn tg [x] (Math/tan x))
+(defn ctg [x] (/ 1 (Math/tan x)))
+(defn sec [x] (/ 1 (Math/cos x)))
+(defn csc [x] (/ 1 (Math/sin x)))
+(defn exp [x] (Math/exp x))
+(defn ln [x] (Math/log x))
+(defn log [x, y] (/ (Math/log x) (Math/log y)))
+(defn sqrt [x, y] (Math/pow x (/ 1 y)))
+(defn arcsin [x] (Math/asin x))
+(defn arccos [x] (Math/acos x))
+(defn arctg [x] (Math/atan x))
+(defn arcctg [x] (Math/atan (/ 1 (ctg x))))
+(defn arcsec [x] (Math/acos (/ 1 x)))
+(defn arccsc [x] (Math/asin (/ 1 x)))
+(defn sinh [x] (Math/sinh x))
+(defn cosh [x] (Math/cosh x))
+(defn tgh [x] (Math/tanh x))
+(defn ctgh [x] (/ (cosh x) (sinh x)))
+(defn sech [x] (/ 1 (cosh x)))
+(defn csch [x] (/ 1 (sinh x)))
+(defn pow [x, y] (Math/pow x y))
+
 (defn sin? [x] (and (= (count x) 2) (= (first x) 'sin)))
 (defn cos? [x] (and (= (count x) 2) (= (first x) 'cos)))
 (defn tg? [x] (and (= (count x) 2) (= (first x) 'tg)))
@@ -241,6 +265,4 @@
   [& args]
   
   (println (differentiation '(ln (tg x)) 'x))
-  ;(eval (differentiation '(ln x) 'x))
-  ;(eval ((let [x 5] (differentiation '(ln (sinh x)) 'x))))
 )
