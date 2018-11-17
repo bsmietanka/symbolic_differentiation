@@ -141,3 +141,28 @@
     (is (= '(* 1 (- 0 (* (ctgh x) (csch x)))) (differentiation '(csch x) 'x)))
   )
 )
+
+(defn round5
+  "Funkcja oblicza wartość funkcji i zaokrągla ją do 5 miejsc po przecinku"
+  [x]
+  (read-string (clojure.string/replace (format "%.5f" (eval (read-string x))) #"," "."))
+)
+
+(deftest eval-diff-test
+  ;(sin(y*(tg(x))))' po x
+  (def diff1 (str (differentiation '(sin (* __y (tg __x))) '__x)))
+  (def diff1 (clojure.string/replace diff1 #"__x" "5"))
+  (def diff1 (clojure.string/replace diff1 #"__y" "3"))
+  ;(sin(2*tg(3/7*exp(x))))'
+  (def diff2 (str (differentiation '(sin (* 2 (tg (* (/ 3 7) (exp __x))))) '__x)))
+  (def diff2 (clojure.string/replace diff2 #"__x" "0.5"))
+  ;((e^(sin(x)))/(tg(sin(x))))'
+  (def diff3 (str (differentiation '(/ (exp (sin __x)) (tg (sin __x))) '__x)))
+  (def diff3 (clojure.string/replace diff3 #"__x" "3"))
+
+  (testing "FIXME, I fail."
+    (is (= -28.10939 (round5 diff1))) ; Wartość pobrana z WolframAlpha.com (~ -28.10939088475794)
+    (is (= -0.33232 (round5 diff2))) ; Wartość pobrana z WolframAlpha.com (~ -0.3323157682996881)
+    (is (= 49.60236 (round5 diff3))) ; Wartość pobrana z WolframAlpha.com (~ 49.6023584095444777)
+  )
+)
