@@ -26,11 +26,11 @@
     (is (= '(-sin x) (differentiation '(cos x) 'x)))
     (is (= '(-sin y) (differentiation '(cos y) 'y)))
     (is (= 0 (differentiation '(cos x) 'y)))
-    (is (= '(/ 1 (\^ (cos x) 2)) (differentiation '(tg x) 'x)))
-    (is (= '(/ 1 (\^ (cos y) 2)) (differentiation '(tg y) 'y)))
+    (is (= '(/ 1 (pow (cos x) 2)) (differentiation '(tg x) 'x)))
+    (is (= '(/ 1 (pow (cos y) 2)) (differentiation '(tg y) 'y)))
     (is (= 0 (differentiation '(tg x) 'y)))
-    (is (= '(/ -1 (\^ (sin x) 2)) (differentiation '(ctg x) 'x)))
-    (is (= '(/ -1 (\^ (sin y) 2)) (differentiation '(ctg y) 'y)))
+    (is (= '(/ -1 (pow (sin x) 2)) (differentiation '(ctg x) 'x)))
+    (is (= '(/ -1 (pow (sin y) 2)) (differentiation '(ctg y) 'y)))
     (is (= 0 (differentiation '(ctg x) 'y)))
     (is (= '(* (tg x) (sec x)) (differentiation '(sec x) 'x)))
     (is (= '(* (tg y) (sec y)) (differentiation '(sec y) 'y)))
@@ -64,45 +64,45 @@
 
 (deftest natural-root-diff-tests
   (testing "FIXME, I fail."
-    (is (= '(* (/ 1 2) (\^ x (- (/ 1 2) 1))) (differentiation '(sqrt 2 x) 'x)))
-    (is (= '(* (/ 1 3) (\^ x (- (/ 1 3) 1))) (differentiation '(sqrt 3 x) 'x)))
-    (is (= '(* (/ 1 4) (\^ x (- (/ 1 4) 1))) (differentiation '(sqrt 4 x) 'x)))
+    (is (= '(* (/ 1 2) (pow x (- (/ 1 2) 1))) (differentiation '(sqrt 2 x) 'x)))
+    (is (= '(* (/ 1 3) (pow x (- (/ 1 3) 1))) (differentiation '(sqrt 3 x) 'x)))
+    (is (= '(* (/ 1 4) (pow x (- (/ 1 4) 1))) (differentiation '(sqrt 4 x) 'x)))
   )
 )
 
 (deftest arcsin-diff-tests
   (testing "FIXME, I fail."
-    (is (= '(/ 1 (\^ (- 1 (\^ x 2)) (/ 1 2))) (differentiation '(arcsin x) 'x)))
+    (is (= '(/ 1 (pow (- 1 (pow x 2)) (/ 1 2))) (differentiation '(arcsin x) 'x)))
   )
 )
 
 (deftest arccos-diff-tests
   (testing "FIXME, I fail."
-    (is (= '(/ -1 (\^ (- 1 (\^ x 2)) (/ 1 2))) (differentiation '(arccos x) 'x)))
+    (is (= '(/ -1 (pow (- 1 (pow x 2)) (/ 1 2))) (differentiation '(arccos x) 'x)))
   )
 )
 
 (deftest arctg-diff-tests
   (testing "FIXME, I fail."
-    (is (= '(/ 1 (+ (\^ x 2) 1)) (differentiation '(arctg x) 'x)))
+    (is (= '(/ 1 (+ (pow x 2) 1)) (differentiation '(arctg x) 'x)))
   )
 )
 
 (deftest arcctg-diff-tests
   (testing "FIXME, I fail."
-    (is (= '(/ -1 (+ (\^ x 2) 1)) (differentiation '(arcctg x) 'x)))
+    (is (= '(/ -1 (+ (pow x 2) 1)) (differentiation '(arcctg x) 'x)))
   )
 )
 
 (deftest arcsec-diff-tests
   (testing "FIXME, I fail."
-    (is (= '(/ 1 (* (\^ (- 1 (/ 1 (\^ x 2))) (/ 1 2)) (\^ x 2))) (differentiation '(arcsec x) 'x)))
+    (is (= '(/ 1 (* (pow (- 1 (/ 1 (pow x 2))) (/ 1 2)) (pow x 2))) (differentiation '(arcsec x) 'x)))
   )
 )
 
 (deftest arccsc-diff-tests
   (testing "FIXME, I fail."
-    (is (= '(/ -1 (* (\^ (- 1 (/ 1 (\^ x 2))) (/ 1 2)) (\^ x 2))) (differentiation '(arccsc x) 'x)))
+    (is (= '(/ -1 (* (pow (- 1 (/ 1 (pow x 2))) (/ 1 2)) (pow x 2))) (differentiation '(arccsc x) 'x)))
   )
 )
 
@@ -120,13 +120,13 @@
 
 (deftest tgh-diff-tests
   (testing "FIXME, I fail."
-    (is (= '(\^ (sech x) 2) (differentiation '(tgh x) 'x)))
+    (is (= '(pow (sech x) 2) (differentiation '(tgh x) 'x)))
   )
 )
 
 (deftest ctgh-diff-tests
   (testing "FIXME, I fail."
-    (is (= '(- 0 (\^ (csch x) 2)) (differentiation '(ctgh x) 'x)))
+    (is (= '(- 0 (pow (csch x) 2)) (differentiation '(ctgh x) 'x)))
   )
 )
 
