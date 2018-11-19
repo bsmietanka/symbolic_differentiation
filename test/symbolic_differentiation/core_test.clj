@@ -70,6 +70,14 @@
   )
 )
 
+(deftest pow-diff-tests
+  (testing "FIXME, I fail."
+    (is (= '(* 1 (* 2 (pow x (- 2 1)))) (differentiation '(pow x 2) 'x)))
+    (is (= '(* 1 (* 3 (pow x (- 3 1)))) (differentiation '(pow x 3) 'x)))
+    (is (= '(* 1 (* 4 (pow x (- 4 1)))) (differentiation '(pow x 4) 'x)))
+  )
+)
+
 (deftest arcsin-diff-tests
   (testing "FIXME, I fail."
     (is (= '(* 1 (/ 1 (pow (- 1 (pow x 2)) 0.5))) (differentiation '(arcsin x) 'x)))

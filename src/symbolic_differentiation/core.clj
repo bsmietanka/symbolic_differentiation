@@ -133,10 +133,10 @@
         (differentiation (second expression) variable)
         (list '*  
           (second (next expression))
-          (list 'pow  (next expression)
+          (list 'pow  (second expression)
             (list '- 
-              (list (second (next expression)) 
-              1)))))
+              (second (next expression)) 
+              1))))
     (arcsin? expression) 
       (list '*
         (differentiation (second expression) variable)
@@ -315,12 +315,106 @@
 )
 
 
+(defn optimize-expression_priv
+  [expression]
+  (if (list? expression)
+    (let [expr expression]
+      (if (list? expr)
+        (do
+          (cond 
+            (and (= (first expr) '*) (= (second expr) 1))
+              (do
+                (def __optimized__ (conj __optimized__ "("))
+                (optimize-expression_priv (second (next expr)))
+                (def __optimized__ (conj __optimized__ ")"))
+              )
+            (and (= (first expr) '*) (= (second expr) 0))
+              (optimize-expression_priv '(0))
+            (= 1 1)
+              (do
+              (def __optimized__ (conj __optimized__ "("))
+              (doseq [x expr]  (optimize-expression_priv x))
+              (def __optimized__ (conj __optimized__ ")"))
+              )
+          )
+        )
+        (do ;else
+          (if (not= nil expr)
+            (def __optimized__ (conj __optimized__ expr))
+          )
+        )
+      )
+    )
+    (if (not= nil expression) ;else
+      (def __optimized__ (conj __optimized__ expression))
+    )  
+  )
+  
+  __optimized__
+)
+
+(defn remove_index
+  [vec index]
+  (let [coll vec
+    i index]
+    (into [] (concat (subvec coll 0 i)
+        (subvec coll (inc i)))))
+)
+
+(defn remove_doubled_brackets_priv
+  [str]
+  (loop [str str open 0 delete false index 0]
+    (if (>= index (count str)) 
+      str
+      (do
+        (if (= false delete)
+          (if (and (= (nth str index) "(") (= (nth str (+ index 1)) "(")) ;))
+            (recur (remove_index str index) 1 true (+ index 1))
+            (recur str 0 false (+ index 1))
+          )
+          (if (= (nth str index) "(") ;)
+            (recur str (+ open 1) true (+ index 1))
+            (if (= (nth str index) ")") ;(
+              (if (= open 1)
+                (recur (remove_index str index) 0 false (+ index 1))
+                (recur str (- open 1) true (+ index 1))
+              )
+              (recur str open true (+ index 1))
+            )
+          )
+        )
+      )
+    )
+  )
+)
+
+(defn remove_doubled_brackets
+  [str]
+  (loop [orig str res (remove_doubled_brackets_priv orig)]
+    (if (= orig res)
+      res
+      (recur res (remove_doubled_brackets_priv res))
+    )
+  )
+)
+
+(defn optimize-expression
+  [expression]
+  (def __optimized__ [])
+  (let [expression expression result (optimize-expression_priv expression)]
+    (read-string (clojure.string/join " " (remove_doubled_brackets result)))
+  )  
+)
+
 (defn -main
   [& args]
   (ns symbolic-differentiation.core)
   (def y 3)
   (def x 5)
   (println (differentiation '(ln (tg x)) 'x))
+  (println (eval (differentiation '(ln (tg x)) 'x)))
+  (println (optimize-expression (differentiation '(ln (tg x)) 'x)))
+  (println (eval (optimize-expression (differentiation '(ln (tg x)) 'x))))
   (println (function-multiple-differentiation-values '(ln (tg x)) 'x '(1 2 3 4)))
   (println (function-multiple-values '(* y (ln x)) 'x '(1 2 3 4)))
   (println (eval (differentiation '(sin (* y (tg x))) 'x)))
