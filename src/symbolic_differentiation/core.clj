@@ -402,7 +402,7 @@
   [expression]
   (def __optimized__ [])
   (let [expression expression result (optimize-expression_priv expression)]
-    (read-string (clojure.string/join " " (remove_doubled_brackets result)))
+    (read-string (clojure.string/replace (clojure.string/join " " (remove_doubled_brackets result)) (re-pattern "\\(\\s0\\s\\)") "0"))
   )  
 )
 
@@ -411,6 +411,8 @@
   (ns symbolic-differentiation.core)
   (def y 3)
   (def x 5)
+  (println (optimize-expression (differentiation '(ln (sin (tg (* 3 x)))) 'x)))
+  (println (eval (optimize-expression (differentiation '(ln (sin (tg (* 3 x)))) 'x))))
   (println (differentiation '(ln (tg x)) 'x))
   (println (eval (differentiation '(ln (tg x)) 'x)))
   (println (optimize-expression (differentiation '(ln (tg x)) 'x)))
