@@ -406,6 +406,28 @@
   )  
 )
 
+(defn nth-differentation
+  "Funkcja liczy n-tą pochodną wyrażenia" 
+  [expression variable degree]
+  (loop [expression expression variable variable degree degree]
+    (if (< degree 1)
+      (optimize-expression expression)
+      (recur (differentiation expression variable) variable (- degree 1))))
+)
+
+(defn function-multiple-nth-differentiation-values
+  "Funkcja liczy n-tą pochodną podanej w parametrze funkcji i oblicza wartości pochodnej w zadanych punktach"
+  [expression variable argument-values degree]
+    (loop [expression (nth-differentation expression variable degree) variable variable argument-values argument-values counted []] 
+      (do
+        (if (= (count argument-values) 0)
+          counted
+          (recur expression variable (next argument-values) (conj counted (diff-eval expression variable (first argument-values))))
+        )
+      )
+    )
+)
+
 (defmacro info []
   (loop [
     func-names ["(differentiation function x) - function - funkcja, x - zmienna po ktorej funkcja bedzie rozniczkowana" 
