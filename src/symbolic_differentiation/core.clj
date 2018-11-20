@@ -406,7 +406,7 @@
   )  
 )
 
-(defn nth-differentation
+(defn nth-differentiation
   "Funkcja liczy n-tą pochodną wyrażenia" 
   [expression variable degree]
   (loop [expression expression variable variable degree degree]
@@ -418,7 +418,7 @@
 (defn function-multiple-nth-differentiation-values
   "Funkcja liczy n-tą pochodną podanej w parametrze funkcji i oblicza wartości pochodnej w zadanych punktach"
   [expression variable argument-values degree]
-    (loop [expression (nth-differentation expression variable degree) variable variable argument-values argument-values counted []] 
+    (loop [expression (nth-differentiation expression variable degree) variable variable argument-values argument-values counted []] 
       (do
         (if (= (count argument-values) 0)
           counted
@@ -435,6 +435,8 @@
       "(function-multiple-differentiation-values function x values) - funkcja oblicza pochodna danej funkcji, a nastepnie oblicza wartosci obliczonej pochodnej w zadanych punktach"
       "(function-multiple-values function x values) - funkcja oblicza wartosci funkcji w zadanych punktach"
       "(function-multiple-values-macro function x values) - makro oblicza wartosci funkcji w zadanych punktach"
+      "(nth-differentiation function x degree) - function - funkcja, x - zmienna po ktorej funkcja bedzie rozniczkowana, degree - stopien pochodnej" 
+      "(function-multiple-nth-differentiation-values function x values degree) - funkcja oblicza n-ta pochodna danejt funckji, a nastepnie oblicza wartosci obliczonej pochodnej w zadanych punktach" 
       "(function-multiple-differentiation-values-macro function x values) - makro oblicza pochodna danej funkcji, a nastepnie oblicza wartosci obliczonej pochodnej w zadanych punktach"
       ] 
     result ['do]]
