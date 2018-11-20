@@ -441,7 +441,7 @@
   (loop [expression expression variable variable degree degree]
     (if (< degree 1)
       (optimize-expression expression)
-      (recur (differentiation expression variable) variable (- degree 1))))
+      (recur (optimize-expression(differentiation expression variable)) variable (- degree 1))))
 )
 
 (defn function-multiple-nth-differentiation-values
@@ -511,7 +511,7 @@
   (def x 5)
   ;(macroexpand info)
   (info)
-  (println (optimize-expression (nth-differentation '(sin x) 'x 6)))
+  (println (optimize-expression (nth-differentiation '(sin x) 'x 6)))
   (println (function-multiple-values-macro '(ln x) 'x (1 2 3 4)))
   (println (function-multiple-differentiation-values-macro '(ln x) 'x (1 2 3 4)))
   (println (optimize-expression (differentiation '(ln (sin (tg (* 3 x)))) 'x)))
