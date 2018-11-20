@@ -330,6 +330,24 @@
               )
             (and (= (first expr) '*) (= (second expr) 0))
               (optimize-expression_priv '(0))
+            (and (= (first expr) '+) (= (second expr) 0))
+              (do
+                (def __optimized__ (conj __optimized__ "("))
+                (optimize-expression_priv (second (next expr)))
+                (def __optimized__ (conj __optimized__ ")"))
+              )
+            (and (= (first expr) '-) (= (second (next expr)) 0))
+              (do
+                (def __optimized__ (conj __optimized__ "("))
+                (optimize-expression_priv (second expr))
+                (def __optimized__ (conj __optimized__ ")"))
+              )
+            (and (= (first expr) '/) (= (second (next expr)) 1))
+              (do
+                (def __optimized__ (conj __optimized__ "("))
+                (optimize-expression_priv (second expr))
+                (def __optimized__ (conj __optimized__ ")"))
+              )
             (= 1 1)
               (do
               (def __optimized__ (conj __optimized__ "("))
@@ -401,10 +419,21 @@
 (defn optimize-expression
   [expression]
   (def __optimized__ [])
-  (let [expression expression result (optimize-expression_priv expression)]
-    (read-string (clojure.string/replace (clojure.string/join " " (remove_doubled_brackets result)) (re-pattern "\\(\\s0\\s\\)") "0"))
-  )  
-)
+  (loop [expression expression result (optimize-expression_priv expression)]
+    (do
+      (def __optimized__ [])
+      (let 
+        [res (read-string (clojure.string/replace (clojure.string/join " " (remove_doubled_brackets result)) (re-pattern "\\(\\s0\\s\\)") "0"))]
+        (do
+            (if (= res expression)
+              res
+              (recur res (optimize-expression_priv res))
+            )
+        )
+      )
+    )
+  )
+)  
 
 (defn nth-differentation
   "Funkcja liczy n-tą pochodną wyrażenia" 
@@ -480,6 +509,7 @@
   (def x 5)
   ;(macroexpand info)
   (info)
+  (println (optimize-expression (nth-differentation '(sin x) 'x 6)))
   (println (function-multiple-values-macro '(ln x) 'x (1 2 3 4)))
   (println (function-multiple-differentiation-values-macro '(ln x) 'x (1 2 3 4)))
   (println (optimize-expression (differentiation '(ln (sin (tg (* 3 x)))) 'x)))
