@@ -406,11 +406,60 @@
   )  
 )
 
+(defmacro info []
+  (loop [
+    func-names ["(differentiation function x) - function - funkcja, x - zmienna po ktorej funkcja bedzie rozniczkowana" 
+      "(optimize-expression function) - funkcja optymalizuje wyrazenie - odpowiednio zamienia mnozenie przez 1 i przez 0" 
+      "(function-multiple-differentiation-values function x values) - funkcja oblicza pochodna danej funkcji, a nastepnie oblicza wartosci obliczonej pochodnej w zadanych punktach"
+      "(function-multiple-values function x values) - funkcja oblicza wartosci funkcji w zadanych punktach"
+      "(function-multiple-values-macro function x values) - makro oblicza wartosci funkcji w zadanych punktach"
+      "(function-multiple-differentiation-values-macro function x values) - makro oblicza pochodna danej funkcji, a nastepnie oblicza wartosci obliczonej pochodnej w zadanych punktach"
+      ] 
+    result ['do]]
+    (if (= 0 (count func-names))
+      (eval (apply list result))
+      (recur (next func-names) (conj (conj result (list 'println (first func-names))) (list 'println "")))
+    )
+  )  
+)
+
+(defmacro function-multiple-values-macro
+  [expression variable values]
+  ;(println expression variable values)
+  (loop [expression expression variable variable values values result []]
+    (if (= 0 (count values))
+      result
+      (do
+        ;(println result)
+        (recur expression variable (next values) (conj result (list diff-eval expression variable (first values))))
+      )
+    )
+  )
+)
+
+(defmacro function-multiple-differentiation-values-macro
+  [expression variable values]
+  ;(println expression variable values)
+  (loop [expression (list differentiation expression variable) variable variable values values result []]
+    (if (= 0 (count values))
+      result
+      (do
+        ;(println result)
+        (recur expression variable (next values) (conj result (list diff-eval expression variable (first values))))
+      )
+    )
+  )
+)
+
 (defn -main
   [& args]
   (ns symbolic-differentiation.core)
   (def y 3)
   (def x 5)
+  ;(macroexpand info)
+  (info)
+  (println (function-multiple-values-macro '(ln x) 'x (1 2 3 4)))
+  (println (function-multiple-differentiation-values-macro '(ln x) 'x (1 2 3 4)))
   (println (optimize-expression (differentiation '(ln (sin (tg (* 3 x)))) 'x)))
   (println (eval (optimize-expression (differentiation '(ln (sin (tg (* 3 x)))) 'x))))
   (println (differentiation '(ln (tg x)) 'x))
