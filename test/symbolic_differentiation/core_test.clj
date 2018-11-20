@@ -157,6 +157,7 @@
 )
 
 (deftest eval-diff-test
+  (ns symbolic-differentiation.core)
   ;(sin(y*(tg(x))))' po x
   (def diff1 (str (differentiation '(sin (* __y (tg __x))) '__x)))
   (def diff1 (clojure.string/replace diff1 #"__x" "5"))
