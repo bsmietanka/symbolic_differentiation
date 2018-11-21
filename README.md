@@ -11,6 +11,10 @@
 7. (optional) Connect VSCode with running REPL using command palette ("Clojure: Connect to a running nREPL")
 8. Run Clojure project in terminal using "lein run" (read more on Leiningen)
 
+## Docs
+
+1. http://jaredpetersen.github.io/codeprinter/ - used to generate code printout
+
 ## Additional resources
  * About Leiningen: https://github.com/technomancy/leiningen/blob/stable/doc/TUTORIAL.md
  * About Clojure: http://clojure-doc.org/articles/tutorials/introduction.html, https://objectcomputing.com/resources/publications/sett/march-2009-clojure-functional-programming-for-the-jvm
